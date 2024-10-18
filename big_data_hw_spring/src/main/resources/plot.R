@@ -7,7 +7,7 @@ function(dataHolder) {
     data <<- c(data[2:100], dataHolder$getValue())
 
     plot <- xyplot(randomData~time,
-       data=data.frame(randomData = data, time = -99:0),
+       data=data.frame(randomData = data, time = 0:99),
        main='Random Number Plot',
        ylab="Random(x)", type = c('l', 'g'), col.line='dark orange')
     print(plot)
