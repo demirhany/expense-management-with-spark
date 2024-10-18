@@ -1,5 +1,6 @@
 package org.ozo.big_data_hw_spring.conifguration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.TypeLiteral;
@@ -12,6 +13,7 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.util.function.Function;
 
+@Slf4j
 @Configuration
 public class AppConfiguration {
     @Value(value = "classpath:plot.R")
@@ -19,9 +21,15 @@ public class AppConfiguration {
 
     @Bean
     protected Function<DataHolder, String> plotFunction(Context context) throws IOException {
+        log.info("... plotFunction is loading...");
+
         Source source = Source.newBuilder("R", plotRResource.getURL()).build();
-        return context.eval(source).as(new TypeLiteral<>() {
+        final Function<DataHolder, String> result = context.eval(source).as(new TypeLiteral<>() {
         });
+
+        log.info("plotFunction is loaded");
+
+        return result;
     }
 
     @Bean
