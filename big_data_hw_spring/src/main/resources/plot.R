@@ -9,7 +9,7 @@ function(dataHolder) {
     plot <- xyplot(randomData~time,
        data=data.frame(randomData = data, time = 0:99),
        main='Random Number Plot',
-       ylab="Random(x)", type = c('l', 'g'), col.line='dark orange')
+       ylab="Random(x)", type = c('l', 'g'), col.line='#5C4033')
     print(plot)
     svg.off()
 }

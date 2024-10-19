@@ -29,6 +29,6 @@ public class CsvReader {
     }
 
     private static String _parseLine(String[] row) {
-        return row[10];
+        return row[16];
     }
 }
