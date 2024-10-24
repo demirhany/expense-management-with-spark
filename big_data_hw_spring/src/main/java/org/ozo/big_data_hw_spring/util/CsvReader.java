@@ -16,12 +16,14 @@ public class CsvReader {
             FileReader filereader = new FileReader(fileName);
 
             // create csvReader object and skip first Line
-            CSVReader csvReader = new CSVReaderBuilder(filereader)
+            List<String> data;
+            try (CSVReader csvReader = new CSVReaderBuilder(filereader)
                     .withSkipLines(1)
-                    .build();
+                    .build()) {
 
-            // e
-            List<String> data =  csvReader.readAll().stream().map(CsvReader::_parseLine).collect(Collectors.toList());
+                // map all data as string array
+                data = csvReader.readAll().stream().map(CsvReader::_parseLine).collect(Collectors.toList());
+            }
             return new DataCol16(data);
         } catch (Exception e) {
             throw new RuntimeException("Error while reading CSV file: " + e);
