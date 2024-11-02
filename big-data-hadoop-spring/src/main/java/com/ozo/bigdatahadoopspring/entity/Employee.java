@@ -1,12 +1,11 @@
 package com.ozo.bigdatahadoopspring.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Date;
 
 @Entity
 @Table(name = "emp", schema = "public")
@@ -19,10 +18,16 @@ public class Employee {
     Long empno;
 
     String ename;
+
     String job;
+
     Long mgr;
-    Date hiredate;
+
+    String hiredate;
+
     Long sal;
+
+    @Nullable
     Long comm;
 
     @ManyToOne

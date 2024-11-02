@@ -19,5 +19,6 @@ public class Department {
     Long deptno;
 
     String dname;
+
     String loc;
 }
