@@ -13,13 +13,19 @@ import java.util.Base64;
 public class PhotoService {
     private final FileSystem fileSystem;
 
-    public String getPhoto(String imageName) throws Exception {
-        Path hdfsPath = new Path("/user/root/images/" + imageName);  // For example: photo.jpg
+    public String getPhotoAsBase64(String imageName) throws Exception {
+        return Base64.getEncoder().encodeToString(getPhotoAsByteArray(imageName));
+    }
+
+    public byte[] getPhotoAsByteArray(String imageName) {
+        // Prepare the path to the image in HDFS. imageName example: photo.jpg
+        Path hdfsPath = new Path("/user/root/images/" + imageName);
+
+        // Read the image from HDFS and return it as byte array
         try (InputStream inputStream = fileSystem.open(hdfsPath)) {
-            byte[] imageBytes = inputStream.readAllBytes();
-            return Base64.getEncoder().encodeToString(imageBytes);
+            return inputStream.readAllBytes();
         } catch (Exception e) {
-            throw new Exception("Failed to get photo with path: " + imageName, e);
+            throw new RuntimeException("Failed to get photo with path: " + imageName, e);
         }
     }
 }

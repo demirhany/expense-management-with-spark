@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees | Show images in base64</title>
+</head>
+<body>
+
+<h1>Employee</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>EMPNO</th>
+        <th>ENAME</th>
+        <th>JOB</th>
+        <th>MGR</th>
+        <th>HIREDATE</th>
+        <th>SAL</th>
+        <th>COMM</th>
+        <th>DEPT</th>
+        <th>IMG</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.getEmpno()}">ID</td>
+        <td th:text="${employee.getEname()}">Name</td>
+        <td th:text="${employee.getJob()}">Name</td>
+        <td th:text="${employee.getMgr()}">Name</td>
+        <td th:text="${employee.getHiredate()}">Name</td>
+        <td th:text="${employee.getSal()}">Name</td>
+        <td th:text="${employee.getComm()}">Name</td>
+        <td th:text="${employee.getDept()}">Name</td>
+        <td>
+            <img th:if="${employee.getBase64Photo() != null}"
+                 th:src="'data:image/jpeg;base64,' + ${employee.getBase64Photo()}"
+                 alt="User Photo" width="100" height="100"/>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

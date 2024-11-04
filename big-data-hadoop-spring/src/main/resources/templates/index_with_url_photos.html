@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Employees | Fetch images by url</title>
 </head>
 <body>
 
@@ -32,8 +32,8 @@
         <td th:text="${employee.getComm()}">Name</td>
         <td th:text="${employee.getDept()}">Name</td>
         <td>
-            <img th:if="${employee.getBase64Photo() != null}"
-                 th:src="'data:image/jpeg;base64,' + ${employee.getBase64Photo()}"
+            <img th:if="${employee.getPhotoUrl() != null}"
+                 th:src="${employee.getPhotoUrl()}"
                  alt="User Photo" width="100" height="100"/>
         </td>
     </tr>

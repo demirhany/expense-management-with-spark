@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeWithPhotoDto {
+public class EmployeeWithBase64PhotoDto {
     private Long empno;
     private String ename;
     private String job;
@@ -21,7 +21,7 @@ public class EmployeeWithPhotoDto {
     private String dept;
     private String Base64Photo;
 
-    public EmployeeWithPhotoDto(Employee employee) {
+    public EmployeeWithBase64PhotoDto(Employee employee) {
         this.empno = employee.getEmpno();
         this.ename = employee.getEname();
         this.job = employee.getJob();

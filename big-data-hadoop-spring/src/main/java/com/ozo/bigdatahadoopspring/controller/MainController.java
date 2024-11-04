@@ -12,8 +12,14 @@ public class MainController {
     private final MainService mainService;
 
     @GetMapping("/")
+    public String fast(Model model) {
+        model.addAttribute("employees", mainService.getAllEmployeesWithUrlPhotos());
+        return "index_with_url_photos";
+    }
+
+    @GetMapping("/base64")
     public String index(Model model) {
-        model.addAttribute("employees", mainService.getAllEmployeesWithPhotos());
-        return "index";
+        model.addAttribute("employees", mainService.getAllEmployeesWithBase64Photos());
+        return "index_with_base64_photos";
     }
 }
