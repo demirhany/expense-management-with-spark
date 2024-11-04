@@ -2,23 +2,19 @@ package com.ozo.bigdatahadoopspring.service;
 
 import com.ozo.bigdatahadoopspring.dto.EmployeeWithPhotoDto;
 import com.ozo.bigdatahadoopspring.entity.Employee;
-import com.ozo.bigdatahadoopspring.repository.DepartmentRepository;
 import com.ozo.bigdatahadoopspring.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class MainService {
-
     private final EmployeeRepository employeeRepository;
-    private final DepartmentRepository departmentRepository;
     private final PhotoService photoService;
 
     public List<EmployeeWithPhotoDto> getAllEmployeesWithPhotos() {
@@ -30,9 +26,8 @@ public class MainService {
                 String photoBase64 = photoService.getPhoto(employee.getImg());
                 employeeWithPhotoDto.setBase64Photo(photoBase64);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("Failed to get photo for employee with empno: " + employee.getEmpno(), e);
             }
-//            log.info("employeeWithPhotoDto: " + employeeWithPhotoDto.getEname());
             employeeWithPhotoDtoList.add(employeeWithPhotoDto);
         }
         return employeeWithPhotoDtoList;
