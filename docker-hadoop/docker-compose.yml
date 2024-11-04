@@ -2,7 +2,7 @@ version: "3"
 
 services:
   namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    image: bde2020/hadoop-namenode:latest
     container_name: namenode
     restart: always
     ports:
@@ -20,7 +20,7 @@ services:
         hard: 65536
 
   datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    image: bde2020/hadoop-datanode:latest
     container_name: datanode
     restart: always
     hostname: localhost
@@ -38,7 +38,7 @@ services:
       - 9864:9864
  
   resourcemanager:
-    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    image: bde2020/hadoop-resourcemanager:latest
     container_name: resourcemanager
     restart: always
     environment:
@@ -51,7 +51,7 @@ services:
         hard: 65536
  
   nodemanager1:
-    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    image: bde2020/hadoop-nodemanager:latest
     container_name: nodemanager
     restart: always
     environment:
@@ -70,7 +70,7 @@ services:
       - 5800:5800
   
   historyserver:
-    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    image: bde2020/hadoop-historyserver:latest
     container_name: historyserver
     restart: always
     environment:

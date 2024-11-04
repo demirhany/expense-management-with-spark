@@ -19,21 +19,20 @@ public class MainService {
 
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
+    private final PhotoService photoService;
 
     public List<EmployeeWithPhotoDto> getAllEmployeesWithPhotos() {
         List<Employee> fetchedEmployees = employeeRepository.findAll();
         List<EmployeeWithPhotoDto> employeeWithPhotoDtoList = new ArrayList<>();
         for (Employee employee : fetchedEmployees) {
             EmployeeWithPhotoDto employeeWithPhotoDto = new EmployeeWithPhotoDto(employee);
-//            byte [] photo = null;
-////            try {
-////                photo = hadoopService.getPhotoFromHadoop(employee.getImg());
-////            } catch (IOException e) {
-////                e.printStackTrace();
-////            }
-//            String photoBase64 = (photo != null) ? Base64.getEncoder().encodeToString(photo) : null;
-//            employeeWithPhotoDto.setBase64Photo(photoBase64);
-            log.info("employeeWithPhotoDto: " + employeeWithPhotoDto.getEname());
+            try{
+                String photoBase64 = photoService.getPhoto(employee.getImg());
+                employeeWithPhotoDto.setBase64Photo(photoBase64);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            log.info("employeeWithPhotoDto: " + employeeWithPhotoDto.getEname());
             employeeWithPhotoDtoList.add(employeeWithPhotoDto);
         }
         return employeeWithPhotoDtoList;
