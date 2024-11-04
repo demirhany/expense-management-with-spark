@@ -1,6 +1,5 @@
 package com.ozo.bigdatahadoopspring.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +26,6 @@ public class Employee {
 
     Long sal;
 
-    @Nullable
     Long comm;
 
     @ManyToOne

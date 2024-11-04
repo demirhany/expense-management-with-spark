@@ -1,7 +1,6 @@
 package com.ozo.bigdatahadoopspring.controller;
 
 import com.ozo.bigdatahadoopspring.service.MainService;
-import com.sun.tools.javac.Main;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -26,7 +26,7 @@ public class MainService {
                 String photoBase64 = photoService.getPhoto(employee.getImg());
                 employeeWithPhotoDto.setBase64Photo(photoBase64);
             } catch (Exception e) {
-                log.error("Failed to get photo for employee with empno: " + employee.getEmpno(), e);
+                log.error("Failed to get photo for employee with empno: {}", employee.getEmpno(), e);
             }
             employeeWithPhotoDtoList.add(employeeWithPhotoDto);
         }
