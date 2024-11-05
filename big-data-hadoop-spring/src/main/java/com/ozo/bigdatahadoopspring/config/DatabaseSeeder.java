@@ -74,6 +74,7 @@ public class DatabaseSeeder {
                         .hiredate(rawEmployee[4])
                         .sal(Long.valueOf(rawEmployee[5]))
                         .comm(comm)
+                        .isDeleted(false)
                         .deptno(department)
                         .img(rawEmployee[8])
                         .build();

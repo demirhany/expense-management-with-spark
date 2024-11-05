@@ -28,6 +28,9 @@ public class Employee {
 
     Long comm;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    Boolean isDeleted;
+
     @ManyToOne
     @JoinColumn(name = "deptno")
     Department deptno;

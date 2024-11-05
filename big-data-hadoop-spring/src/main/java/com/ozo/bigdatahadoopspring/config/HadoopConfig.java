@@ -23,7 +23,7 @@ public class HadoopConfig {
         configuration.set("fs.defaultFS", hadoopUrl);
 
         // This is necessary to avoid the connection refused exception when reaching data node
-        configuration.set("dfs.client.use.datanode.hostname", "true");
+//        configuration.set("dfs.client.use.datanode.hostname", "true");
         configuration.set("dfs.datanode.hostname", hadoopDatanodeHostname);
 
         FileSystem result = FileSystem.get(configuration);

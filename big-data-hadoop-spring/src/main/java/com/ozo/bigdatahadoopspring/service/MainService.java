@@ -1,5 +1,6 @@
 package com.ozo.bigdatahadoopspring.service;
 
+import com.ozo.bigdatahadoopspring.dto.EmployeeDto;
 import com.ozo.bigdatahadoopspring.dto.EmployeeWithBase64PhotoDto;
 import com.ozo.bigdatahadoopspring.dto.EmployeeWithUrlPhotoDto;
 import com.ozo.bigdatahadoopspring.entity.Employee;
@@ -19,7 +20,7 @@ public class MainService {
     private final PhotoService photoService;
 
     public List<EmployeeWithBase64PhotoDto> getAllEmployeesWithBase64Photos() {
-        List<Employee> fetchedEmployees = employeeRepository.findAll();
+        List<Employee> fetchedEmployees = employeeRepository.findAllAndIsDeletedFalse();
         List<EmployeeWithBase64PhotoDto> employeeWithPhotoDtoList = new ArrayList<>();
         for (Employee employee : fetchedEmployees) {
             EmployeeWithBase64PhotoDto employeeWithPhotoDto = _getEmployeeWithBase64PhotoDto(employee);
@@ -58,5 +59,33 @@ public class MainService {
             log.error("Failed to get photo for employee with empno: {}", employee.getEmpno(), e);
         }
         return employeeWithPhotoDto;
+    }
+
+    public EmployeeDto getEmployeeByEmpno(Long empno) {
+        return new EmployeeDto(employeeRepository.findById(empno).orElseThrow(
+                () -> new RuntimeException("Employee with empno " + empno + " not found")
+        ));
+    }
+
+    public void deleteEmployeeByEmpno(Long empno) {
+        Employee employee = employeeRepository.findById(empno).orElseThrow(
+                () -> new RuntimeException("Employee with empno " + empno + " not found")
+        );
+        employee.setIsDeleted(true);
+        employeeRepository.save(employee);
+    }
+
+    public EmployeeDto updateEmployeeByEmpno(Long empno, EmployeeDto employeeDto) {
+        Employee employee = employeeRepository.findById(empno).orElseThrow(
+                () -> new RuntimeException("Employee with empno " + empno + " not found")
+        );
+        employee.setEname(employeeDto.getEname());
+        employee.setJob(employeeDto.getJob());
+        employee.setMgr(employeeDto.getMgr());
+        employee.setHiredate(employeeDto.getHiredate());
+        employee.setSal(employeeDto.getSal());
+        employee.setComm(employeeDto.getComm());
+        employeeRepository.save(employee);
+        return new EmployeeDto(employee);
     }
 }
