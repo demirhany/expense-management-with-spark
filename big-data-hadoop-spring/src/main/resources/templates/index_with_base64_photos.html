@@ -11,6 +11,10 @@
 <h1>Employee</h1>
 <div class="container-fluid">
     <div class="col-md-9 col-12">
+        <button type="button"
+                class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#staticBackdropCreate"> Create
+        </button>
         <table class="table table-striped border border-2">
             <thead>
             <tr>
@@ -62,6 +66,63 @@
     </div>
 </div>
 
+<!-- Create Modal -->
+<div class="modal fade" id="staticBackdropCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabelCreate" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabelCreate">Create</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="empnoCreateModal" class="form-label">EMPNO</label>
+                        <input type="text" class="form-control" id="empnoCreateModal" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="enameCreateModal" class="form-label">ENAME</label>
+                        <input type="text" class="form-control" id="enameCreateModal" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jobCreateModal" class="form-label">JOB</label>
+                        <input type="text" class="form-control" id="jobCreateModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mgrCreateModal" class="form-label">MGR</label>
+                        <input type="number" class="form-control" id="mgrCreateModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="hiredateCreateModal" class="form-label">HIREDATE</label>
+                        <input type="text" class="form-control" id="hiredateCreateModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="salCreateModal" class="form-label">SAL</label>
+                        <input type="number" class="form-control" id="salCreateModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="commCreateModal" class="form-label">COMM</label>
+                        <input type="number" class="form-control" id="commCreateModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="deptCreateModal" class="form-label">DEPT</label>
+                        <input type="number" class="form-control" id="deptCreateModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="imgCreateModal" class="form-label">IMG</label>
+                        <input type="file" class="form-control" id="imgCreateModal">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick=createEmployeeModal() class="btn btn-primary">save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Update Modal -->
 <div class="modal fade" id="staticBackdropUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -83,7 +144,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="mgrModal" class="form-label">MGR</label>
-                        <input type="text" class="form-control" id="mgrModal">
+                        <input type="number" class="form-control" id="mgrModal">
                     </div>
                     <div class="mb-3">
                         <label for="hiredateModal" class="form-label">HIREDATE</label>
@@ -91,11 +152,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="salModal" class="form-label">SAL</label>
-                        <input type="text" class="form-control" id="salModal">
+                        <input type="number" class="form-control" id="salModal">
                     </div>
                     <div class="mb-3">
                         <label for="commModal" class="form-label">COMM</label>
-                        <input type="text" class="form-control" id="commModal">
+                        <input type="number" class="form-control" id="commModal">
                     </div>
                     <div class="mb-3">
                         <label for="deptModal" class="form-label">DEPT</label>
@@ -132,8 +193,55 @@
 </div>
 
 <script>
-    let empnoWillDelete ;
-    let employeeWillUpdate ;
+    let empnoWillDelete;
+    let employeeWillUpdate;
+
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    async function createEmployeeModal() {
+        console.log("createEmployee called");
+        const input = document.getElementById("imgCreateModal");
+        const file = input.files[0]; // Get the first selected file
+
+        const base64String = await readFileAsBase64(file);
+        console.log("image" + base64String);
+
+        const employeeData = {
+            empno: document.getElementById('empnoCreateModal').value,
+            ename: document.getElementById('enameCreateModal').value,
+            job: document.getElementById('jobCreateModal').value,
+            mgr: document.getElementById('mgrCreateModal').value,
+            hiredate: document.getElementById('hiredateCreateModal').value,
+            sal: document.getElementById('salCreateModal').value,
+            comm: document.getElementById('commCreateModal').value,
+            dept: document.getElementById('deptCreateModal').value,
+            imageBase64: base64String
+        };
+
+        const response = await fetch('/api/employee', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(employeeData)
+        });
+
+        if (response.ok) {
+            console.log('Employee created successfully');
+        } else {
+            const data = JSON.stringify(response.body);
+            console.error('Failed to create employee' + data);
+        }
+        location.reload(); // Optionally refresh the page
+    }
 
     function updateEmployee(empno) {
         console.log(empno);
@@ -174,7 +282,7 @@
         if (response.ok) {
             console.log('Employee updated successfully');
         } else {
-            console.error('Failed to update employee');
+            console.error('Failed to update employee' + response.body);
         }
         location.reload(); // Optionally refresh the page
     }

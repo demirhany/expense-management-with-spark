@@ -1,16 +1,21 @@
 package com.ozo.bigdatahadoopspring.service;
 
+import com.ozo.bigdatahadoopspring.dto.EmployeeCreateReq;
 import com.ozo.bigdatahadoopspring.dto.EmployeeDto;
 import com.ozo.bigdatahadoopspring.dto.EmployeeWithBase64PhotoDto;
 import com.ozo.bigdatahadoopspring.dto.EmployeeWithUrlPhotoDto;
+import com.ozo.bigdatahadoopspring.entity.Department;
 import com.ozo.bigdatahadoopspring.entity.Employee;
+import com.ozo.bigdatahadoopspring.repository.DepartmentRepository;
 import com.ozo.bigdatahadoopspring.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ import java.util.List;
 public class MainService {
     private final EmployeeRepository employeeRepository;
     private final PhotoService photoService;
+    private final DepartmentRepository departmentRepository;
 
     public List<EmployeeWithBase64PhotoDto> getAllEmployeesWithBase64Photos() {
         List<Employee> fetchedEmployees = employeeRepository.findAllAndIsDeletedFalse();
@@ -65,6 +71,37 @@ public class MainService {
         return new EmployeeDto(employeeRepository.findById(empno).orElseThrow(
                 () -> new RuntimeException("Employee with empno " + empno + " not found")
         ));
+    }
+
+    public EmployeeDto createEmployee(EmployeeCreateReq employeeCreateReq) {
+        // find department object by deptno
+        Department department = departmentRepository.getReferenceById(employeeCreateReq.getDept());
+        log.info("createEmployee: department found: {}", department);
+
+        // save image to hdfs
+        UUID imageNameUuid = UUID.randomUUID();
+        String imageName = String.format("%s.jpg", imageNameUuid);
+        log.info("createEmployee: imageName: {}", imageName);
+        byte[] imageData = Base64.getDecoder().decode(employeeCreateReq.getImageBase64().split(",")[1]);
+        photoService.savePhoto(imageName, imageData);
+
+        // create entity to save
+        Employee employee = Employee.builder()
+                .empno(employeeCreateReq.getEmpno())
+                .ename(employeeCreateReq.getEname())
+                .job(employeeCreateReq.getJob())
+                .mgr(employeeCreateReq.getMgr())
+                .hiredate(employeeCreateReq.getHiredate())
+                .sal(employeeCreateReq.getSal())
+                .comm(employeeCreateReq.getComm())
+                .isDeleted(false)
+                .deptno(department)
+                .img(imageName)
+                .build();
+
+        // save to db
+        Employee saved = employeeRepository.save(employee);
+        return new EmployeeDto(saved);
     }
 
     public void deleteEmployeeByEmpno(Long empno) {

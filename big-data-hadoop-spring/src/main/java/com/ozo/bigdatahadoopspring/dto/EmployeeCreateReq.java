@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class EmployeeUpdateReq {
+public class EmployeeCreateReq {
+    private Long empno;
     private String ename;
     private String job;
     private Long mgr;

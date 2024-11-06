@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Base64;
 
 @Service
@@ -14,7 +15,7 @@ import java.util.Base64;
 public class PhotoService {
     private final FileSystem fileSystem;
 
-    public String getPhotoAsBase64(String imageName) throws Exception {
+    public String getPhotoAsBase64(String imageName) {
         return Base64.getEncoder().encodeToString(getPhotoAsByteArray(imageName));
     }
 
@@ -37,6 +38,18 @@ public class PhotoService {
             fileSystem.delete(hdfsPath, false);
         } catch (IOException e) {
             throw new RuntimeException("Failed to delete photo with path: " + imageName, e);
+        }
+    }
+
+    public void savePhoto(String imageName, byte[] imageData) {
+        // Prepare the path to the image in HDFS. imageName example: photo.jpg
+        Path hdfsPath = new Path("/user/root/images/" + imageName);
+
+        // Read the image from HDFS and return it as byte array
+        try (OutputStream inputStream = fileSystem.create(hdfsPath)) {
+            inputStream.write(imageData);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save photo with path: " + imageName, e);
         }
     }
 }
