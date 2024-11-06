@@ -33,7 +33,7 @@ public class MainService {
     }
 
     public List<EmployeeWithUrlPhotoDto> getAllEmployeesWithUrlPhotos() {
-        List<Employee> fetchedEmployees = employeeRepository.findAll();
+        List<Employee> fetchedEmployees = employeeRepository.findAllAndIsDeletedFalse();
         List<EmployeeWithUrlPhotoDto> employeeWithPhotoDtoList = new ArrayList<>();
         for (Employee employee : fetchedEmployees) {
             EmployeeWithUrlPhotoDto employeeWithPhotoDto = _getEmployeeWithUrlPhotoDto(employee);
