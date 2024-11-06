@@ -2,6 +2,7 @@ package com.ozo.bigdatahadoopspring.controller;
 
 import com.ozo.bigdatahadoopspring.dto.EmployeeCreateReq;
 import com.ozo.bigdatahadoopspring.dto.EmployeeDto;
+import com.ozo.bigdatahadoopspring.dto.EmployeeUpdateReq;
 import com.ozo.bigdatahadoopspring.service.MainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,8 @@ public class ApiController {
     }
 
     @PutMapping("/employee/{empno}")
-    public ResponseEntity<EmployeeDto> updateEmployeeByEmpno(@PathVariable("empno") Long empno, @RequestBody EmployeeDto employeeDto) {
-        return ResponseEntity.ok(mainService.updateEmployeeByEmpno(empno, employeeDto));
+    public ResponseEntity<EmployeeDto> updateEmployeeByEmpno(@PathVariable("empno") Long empno, @RequestBody EmployeeUpdateReq employeeUpdateReq) {
+        return ResponseEntity.ok(mainService.updateEmployeeByEmpno(empno, employeeUpdateReq));
     }
 
     @DeleteMapping("/employee/{empno}")

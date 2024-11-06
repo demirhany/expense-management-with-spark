@@ -1,9 +1,6 @@
 package com.ozo.bigdatahadoopspring.service;
 
-import com.ozo.bigdatahadoopspring.dto.EmployeeCreateReq;
-import com.ozo.bigdatahadoopspring.dto.EmployeeDto;
-import com.ozo.bigdatahadoopspring.dto.EmployeeWithBase64PhotoDto;
-import com.ozo.bigdatahadoopspring.dto.EmployeeWithUrlPhotoDto;
+import com.ozo.bigdatahadoopspring.dto.*;
 import com.ozo.bigdatahadoopspring.entity.Department;
 import com.ozo.bigdatahadoopspring.entity.Employee;
 import com.ozo.bigdatahadoopspring.repository.DepartmentRepository;
@@ -113,16 +110,32 @@ public class MainService {
         employeeRepository.save(employee);
     }
 
-    public EmployeeDto updateEmployeeByEmpno(Long empno, EmployeeDto employeeDto) {
+    public EmployeeDto updateEmployeeByEmpno(Long empno, EmployeeUpdateReq employeeUpdateReq) {
+        log.info("updateEmployeeByEmpno: {}", employeeUpdateReq);
         Employee employee = employeeRepository.findById(empno).orElseThrow(
                 () -> new RuntimeException("Employee with empno " + empno + " not found")
         );
-        employee.setEname(employeeDto.getEname());
-        employee.setJob(employeeDto.getJob());
-        employee.setMgr(employeeDto.getMgr());
-        employee.setHiredate(employeeDto.getHiredate());
-        employee.setSal(employeeDto.getSal());
-        employee.setComm(employeeDto.getComm());
+        Department department = departmentRepository.getReferenceById(employeeUpdateReq.getDept());
+
+        String imageName = employee.getImg();
+        if (employeeUpdateReq.getImageBase64() != null && !employeeUpdateReq.getImageBase64().isEmpty()) {
+            final String oldImageName = imageName;
+            UUID imageNameUuid = UUID.randomUUID();
+            imageName = String.format("%s.jpg", imageNameUuid);
+            byte[] imageData = Base64.getDecoder().decode(employeeUpdateReq.getImageBase64().split(",")[1]);
+            photoService.savePhoto(imageName, imageData);
+            photoService.deletePhoto(oldImageName);
+        }
+
+        employee.setEname(employeeUpdateReq.getEname());
+        employee.setJob(employeeUpdateReq.getJob());
+        employee.setMgr(employeeUpdateReq.getMgr());
+        employee.setHiredate(employeeUpdateReq.getHiredate());
+        employee.setSal(employeeUpdateReq.getSal());
+        employee.setComm(employeeUpdateReq.getComm());
+        employee.setDeptno(department);
+        employee.setImg(imageName);
+
         employeeRepository.save(employee);
         return new EmployeeDto(employee);
     }

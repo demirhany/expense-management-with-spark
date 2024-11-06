@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "imageBase64")
 public class EmployeeUpdateReq {
     private String ename;
     private String job;

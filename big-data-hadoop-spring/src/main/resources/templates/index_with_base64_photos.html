@@ -159,8 +159,13 @@
                         <input type="number" class="form-control" id="commModal">
                     </div>
                     <div class="mb-3">
-                        <label for="deptModal" class="form-label">DEPT</label>
-                        <input type="text" class="form-control" id="deptModal">
+                        <label for="deptModal" class="form-label">DEPT:</label>
+                        <span id="deptNameModal"></span>
+                        <input type="number" class="form-control" id="deptModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="imgUpdateModal" class="form-label">IMG</label>
+                        <input type="file" class="form-control" id="imgUpdateModal">
                     </div>
                 </form>
             </div>
@@ -254,13 +259,23 @@
                 document.getElementById('hiredateModal').value = data.hiredate;
                 document.getElementById('salModal').value = data.sal;
                 document.getElementById('commModal').value = data.comm;
-                document.getElementById('deptModal').value = data.dept;
+                document.getElementById('deptNameModal').innerText = data.dept;
+                document.getElementById('deptModal').value = data.deptno;
                 employeeWillUpdate = data.empno;
                 console.log("employeeWillUpdate: " + employeeWillUpdate);
             });
     }
 
     async function updateEmployeeModal() {
+        console.log("updateEmployee called");
+        const input = document.getElementById("imgUpdateModal");
+        const file = input.files[0]; // Get the first selected file
+        let base64String;
+        if (file !== null) {
+            console.log("file not null: " + file);
+            base64String = await readFileAsBase64(file);
+            console.log("image" + base64String);
+        }
         const employeeData = {
             ename: document.getElementById('enameModal').value,
             job: document.getElementById('jobModal').value,
@@ -268,7 +283,8 @@
             hiredate: document.getElementById('hiredateModal').value,
             sal: document.getElementById('salModal').value,
             comm: document.getElementById('commModal').value,
-            dept: document.getElementById('deptModal').value
+            dept: document.getElementById('deptModal').value,
+            imageBase64: base64String
         };
 
         const response = await fetch('/api/employee/' + employeeWillUpdate, {

@@ -19,6 +19,7 @@ public class EmployeeDto {
     private Long sal;
     private Long comm;
     private String dept;
+    private Long deptno;
 
     public EmployeeDto(Employee employee) {
         this.empno = employee.getEmpno();
@@ -29,5 +30,6 @@ public class EmployeeDto {
         this.sal = employee.getSal();
         this.comm = employee.getComm();
         this.dept = employee.getDeptno().getDname();
+        this.deptno = employee.getDeptno().getDeptno();
     }
 }
