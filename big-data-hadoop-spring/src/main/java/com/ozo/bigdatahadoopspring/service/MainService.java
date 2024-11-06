@@ -72,6 +72,7 @@ public class MainService {
                 () -> new RuntimeException("Employee with empno " + empno + " not found")
         );
         employee.setIsDeleted(true);
+        photoService.deletePhoto(employee.getImg());
         employeeRepository.save(employee);
     }
 

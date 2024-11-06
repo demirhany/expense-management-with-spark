@@ -24,6 +24,7 @@ public class ApiController {
     @DeleteMapping("/employee/{empno}")
     public ResponseEntity<String> deleteEmployeeByEmpno(@PathVariable("empno") Long empno) {
         mainService.deleteEmployeeByEmpno(empno);
+
         return ResponseEntity.ok("Employee with empno: " + empno + " deleted successfully");
     }
 }
