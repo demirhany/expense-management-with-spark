@@ -271,7 +271,7 @@
         const input = document.getElementById("imgUpdateModal");
         const file = input.files[0]; // Get the first selected file
         let base64String;
-        if (file !== null) {
+        if (input.files.length > 0) {
             console.log("file not null: " + file);
             base64String = await readFileAsBase64(file);
             console.log("image" + base64String);
