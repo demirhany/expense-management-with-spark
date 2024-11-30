@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees | Show images in base64</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+<body>
+
+<h1>Employee</h1>
+<div class="container-fluid">
+    <div class="col-md-9 col-12">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropCreate">
+            create
+        </button>
+        <table class=" table table-striped border border-2">
+            <thead>
+            <tr>
+                <th>EMPNO</th>
+                <th>ENAME</th>
+                <th>JOB</th>
+                <th>MGR</th>
+                <th>HIREDATE</th>
+                <th>SAL</th>
+                <th>COMM</th>
+                <th>DEPT</th>
+                <th>IMG</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.getEmpno()}">ID</td>
+                <td th:text="${employee.getEname()}">Name</td>
+                <td th:text="${employee.getJob()}">Name</td>
+                <td th:text="${employee.getMgr()}">Name</td>
+                <td th:text="${employee.getHiredate()}">Name</td>
+                <td th:text="${employee.getSal()}">Name</td>
+                <td th:text="${employee.getComm()}">Name</td>
+                <td th:text="${employee.getDept()}">Name</td>
+                <td>
+                    <img th:if="${employee.getPhotoUrl() != null}"
+                         th:src="${employee.getPhotoUrl()}"
+                         alt="User Photo" width="100" height="100"/>
+                </td>
+                <td>
+                    <!-- Button trigger Update -->
+                    <button type="button" th:attr="onclick='updateEmployee(' + ${employee.getEmpno()} + ')'"
+                            class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdropUpdate">Update
+                    </button>
+                </td>
+                <td>
+                    <!-- Button trigger Delete -->
+                    <button type="button" th:attr="onclick='setEmpno(' + ${employee.getEmpno()} + ')'"
+                            class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdropDelete">Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="staticBackdropCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabelCreate">Create</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="empnoModalCreate" class="form-label">EMPNO</label>
+                        <input type="text" class="form-control" id="empnoModalCreate" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="enameModalCreate" class="form-label">ENAME</label>
+                        <input type="text" class="form-control" id="enameModalCreate" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jobModalCreate" class="form-label">JOB</label>
+                        <input type="text" class="form-control" id="jobModalCreate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mgrModalCreate" class="form-label">MGR</label>
+                        <input type="text" class="form-control" id="mgrModalCreate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="hiredateModalCreate" class="form-label">HIREDATE</label>
+                        <input type="text" class="form-control" id="hiredateModalCreate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="salModalCreate" class="form-label">SAL</label>
+                        <input type="text" class="form-control" id="salModalCreate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="commModalCreate" class="form-label">COMM</label>
+                        <input type="text" class="form-control" id="commModalCreate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="deptModalCreate" class="form-label">DEPT</label>
+                        <input type="text" class="form-control" id="deptModalCreate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="photoModalCreate" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="photoModalCreate">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="createEmployeeModal()" class="btn btn-primary">save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Update Modal -->
+<div class="modal fade" id="staticBackdropUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabelUpdate">Update</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="enameModal" class="form-label">ENAME</label>
+                        <input type="text" class="form-control" id="enameModal" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jobModal" class="form-label">JOB</label>
+                        <input type="text" class="form-control" id="jobModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mgrModal" class="form-label">MGR</label>
+                        <input type="text" class="form-control" id="mgrModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="hiredateModal" class="form-label">HIREDATE</label>
+                        <input type="text" class="form-control" id="hiredateModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="salModal" class="form-label">SAL</label>
+                        <input type="text" class="form-control" id="salModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="commModal" class="form-label">COMM</label>
+                        <input type="text" class="form-control" id="commModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="deptModal" class="form-label">DEPT</label>
+                        <input type="text" class="form-control" id="deptModal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="photoModalUpdate" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="photoModalUpdate">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="updateEmployeeModal()" class="btn btn-primary">save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabelDelete">Delete</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>You are deleting the customer. Are you sure?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="deleteEmployee()" class="btn btn-primary">yes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">no</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let empnoWillDelete;
+    let employeeWillUpdate;
+
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    function updateEmployee(empno) {
+        console.log(empno);
+        fetch('/api/employee/' + empno)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('enameModal').value = data.ename;
+                document.getElementById('jobModal').value = data.job;
+                document.getElementById('mgrModal').value = data.mgr;
+                document.getElementById('hiredateModal').value = data.hiredate;
+                document.getElementById('salModal').value = data.sal;
+                document.getElementById('commModal').value = data.comm;
+                document.getElementById('deptModal').value = data.dept;
+                employeeWillUpdate = data.empno;
+                console.log("employeeWillUpdate: " + employeeWillUpdate);
+            });
+    }
+
+    async function updateEmployeeModal() {
+        const input = document.getElementById('photoModalUpdate');
+        const file = input.files[0];
+        let base64Image;
+        if (file!=null){
+            console.log("file is not null");
+            base64Image = await readFileAsBase64(file);
+        }
+
+        const employeeData = {
+            ename: document.getElementById('enameModal').value,
+            job: document.getElementById('jobModal').value,
+            mgr: document.getElementById('mgrModal').value,
+            hiredate: document.getElementById('hiredateModal').value,
+            sal: document.getElementById('salModal').value,
+            comm: document.getElementById('commModal').value,
+            dept: document.getElementById('deptModal').value,
+            base64Image: base64Image
+        };
+
+        const response = await fetch('/api/employee/' + employeeWillUpdate, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(employeeData)
+        });
+
+        if (response.ok) {
+            console.log('Employee updated successfully');
+        } else {
+            console.error('Failed to update employee');
+        }
+        location.reload();
+    }
+
+    async function createEmployeeModal() {
+        const input = document.getElementById('photoModalCreate');
+        const file = input.files[0];
+        let base64Image;
+        if (file!=null){
+            base64Image = await readFileAsBase64(file);
+        }
+        const employeeData = {
+            empno: document.getElementById('empnoModalCreate').value,
+            ename: document.getElementById('enameModalCreate').value,
+            job: document.getElementById('jobModalCreate').value,
+            mgr: document.getElementById('mgrModalCreate').value,
+            hiredate: document.getElementById('hiredateModalCreate').value,
+            sal: document.getElementById('salModalCreate').value,
+            comm: document.getElementById('commModalCreate').value,
+            dept: document.getElementById('deptModalCreate').value,
+            base64Image: base64Image
+
+        };
+        console.log(employeeData);
+
+        const response = await fetch('/api/employee', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(employeeData)
+        });
+        if (response.ok) {
+            console.log('Employee created successfully');
+            // location.reload();
+        } else {
+            console.error('Failed to create employee');
+        }
+        location.reload();
+    }
+
+    async function deleteEmployee() {
+        console.log("empnoWillDelete is deleted: " + empnoWillDelete);
+        await fetch('/api/employee/' + empnoWillDelete, {
+            method: 'DELETE'
+        })
+            .then(data => {
+                console.log(data);
+            });
+        location.reload();
+    }
+
+    function setEmpno(empno) {
+        empnoWillDelete = empno;
+        console.log("empnoWillDelete setted: " + empnoWillDelete);
+    }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+</body>
+</html>
