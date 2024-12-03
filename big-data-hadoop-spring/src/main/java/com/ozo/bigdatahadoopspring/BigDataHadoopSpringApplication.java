@@ -7,5 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BigDataHadoopSpringApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BigDataHadoopSpringApplication.class, args);
+
 	}
 }

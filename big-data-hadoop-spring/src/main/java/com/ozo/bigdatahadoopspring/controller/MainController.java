@@ -14,6 +14,7 @@ public class MainController {
     @GetMapping("/")
     public String fast(Model model) {
         model.addAttribute("employees", mainService.getAllEmployeesWithUrlPhotos());
+
         return "index_with_url_photos";
     }
 
