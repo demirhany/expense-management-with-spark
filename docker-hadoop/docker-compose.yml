@@ -84,6 +84,18 @@ services:
         soft: 65536
         hard: 65536
 
+  postgres:
+    image: postgres
+    container_name: postgresdb
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 1234
+      PGDATA: /data/postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_volume:/data/postgres
+
   cassandra:
     image: cassandra:latest
     container_name: cassandra-container
@@ -154,3 +166,4 @@ volumes:
   hadoop_datanode:
   hadoop_historyserver:
   cassandra-data:
+  postgres_volume:
