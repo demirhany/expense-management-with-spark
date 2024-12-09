@@ -3,6 +3,7 @@ version: "3"
 services:
   namenode:
     image: bde2020/hadoop-namenode:latest
+    hostname: namenode
     container_name: namenode
     restart: always
     ports:
@@ -18,6 +19,8 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    networks:
+      - cluster-network
 
   datanode:
     image: bde2020/hadoop-datanode:latest
@@ -36,6 +39,8 @@ services:
         hard: 65536
     ports:
       - 9864:9864
+    networks:
+      - cluster-network
  
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:latest
@@ -49,6 +54,8 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    networks:
+      - cluster-network
  
   nodemanager1:
     image: bde2020/hadoop-nodemanager:latest
@@ -62,12 +69,16 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    networks:
+      - cluster-network
 
   firefox:
     image: jlesage/firefox
     hostname: firefox
     ports:
       - 5800:5800
+    networks:
+      - cluster-network
   
   historyserver:
     image: bde2020/hadoop-historyserver:latest
@@ -83,6 +94,8 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    networks:
+      - cluster-network
 
   postgres:
     image: postgres
@@ -95,6 +108,8 @@ services:
       - 5432:5432
     volumes:
       - postgres_volume:/data/postgres
+    networks:
+      - cluster-network
 
   cassandra:
     image: cassandra:latest
@@ -106,6 +121,8 @@ services:
       - CASSANDRA_PASSWORD=admin
     volumes:
       - cassandra-data:/var/lib/cassandra
+    networks:
+      - cluster-network
 
   spark-master:
     image: bde2020/spark-master:latest
@@ -120,6 +137,14 @@ services:
       - "SPARK_MASTER_HOST=spark-master"
     env_file:
       - ./hadoop.env
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - ./spark_data:/spark/data
+    networks:
+      - cluster-network
 
   spark-worker:
     image: bde2020/spark-worker:latest
@@ -132,6 +157,12 @@ services:
       - SPARK_WORKER_CORES=1
     env_file:
       - ./hadoop.env
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - cluster-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -142,6 +173,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - cluster-network
 
   broker:
     image: apache/kafka:latest
@@ -162,9 +195,15 @@ services:
       KAFKA_NUM_PARTITIONS: 3
     ports:
       - "9092:9092"
+    networks:
+      - cluster-network
+
 volumes:
   hadoop_namenode:
   hadoop_datanode:
   hadoop_historyserver:
   cassandra-data:
   postgres_volume:
+
+networks:
+  cluster-network:
