@@ -27,6 +27,7 @@ public class MainService {
         List<EmployeeWithBase64PhotoDto> employeeWithPhotoDtoList = new ArrayList<>();
         for (Employee employee : fetchedEmployees) {
             EmployeeWithBase64PhotoDto employeeWithPhotoDto = _getEmployeeWithBase64PhotoDto(employee);
+            employeeWithPhotoDto.setTotalExpense(getTotalExpenseByEmpno(employee.getEmpno()));
             employeeWithPhotoDtoList.add(employeeWithPhotoDto);
         }
         return employeeWithPhotoDtoList;
@@ -37,9 +38,15 @@ public class MainService {
         List<EmployeeWithUrlPhotoDto> employeeWithPhotoDtoList = new ArrayList<>();
         for (Employee employee : fetchedEmployees) {
             EmployeeWithUrlPhotoDto employeeWithPhotoDto = _getEmployeeWithUrlPhotoDto(employee);
+            employeeWithPhotoDto.setTotalExpense(getTotalExpenseByEmpno(employee.getEmpno()));
             employeeWithPhotoDtoList.add(employeeWithPhotoDto);
         }
         return employeeWithPhotoDtoList;
+    }
+
+    public Long getTotalExpenseByEmpno(Long empno) {
+        // dummy implementation
+        return 1000L;
     }
 
     private EmployeeWithBase64PhotoDto _getEmployeeWithBase64PhotoDto(Employee employee) {

@@ -26,6 +26,7 @@
                 <th>SAL</th>
                 <th>COMM</th>
                 <th>DEPT</th>
+                <th>TOTAL EXPENSE</th>
                 <th>IMG</th>
                 <th></th>
                 <th></th>
@@ -33,14 +34,15 @@
             </thead>
             <tbody>
             <tr th:each="employee : ${employees}">
-                <td th:text="${employee.getEmpno()}">ID</td>
-                <td th:text="${employee.getEname()}">Name</td>
-                <td th:text="${employee.getJob()}">Name</td>
-                <td th:text="${employee.getMgr()}">Name</td>
-                <td th:text="${employee.getHiredate()}">Name</td>
-                <td th:text="${employee.getSal()}">Name</td>
-                <td th:text="${employee.getComm()}">Name</td>
-                <td th:text="${employee.getDept()}">Name</td>
+                <td th:text="${employee.getEmpno()}"></td>
+                <td th:text="${employee.getEname()}"></td>
+                <td th:text="${employee.getJob()}"></td>
+                <td th:text="${employee.getMgr()}"></td>
+                <td th:text="${employee.getHiredate()}"></td>
+                <td th:text="${employee.getSal()}"></td>
+                <td th:text="${employee.getComm()}"></td>
+                <td th:text="${employee.getDept()}"></td>
+                <td th:text="${employee.getTotalExpense()}"></td>
                 <td>
                     <img th:if="${employee.getBase64Photo() != null}"
                          th:src="'data:image/jpeg;base64,' + ${employee.getBase64Photo()}"
