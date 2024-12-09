@@ -1,0 +1,1 @@
+/spark/bin/spark-submit --class com.ozo.KafkaToCassandra --master spark://spark-master:7077 --deploy-mode cluster --conf spark.executor.memory=2g --conf spark.driver.memory=2g --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 hdfs://namenode:9000/user/root/jars/spark-expense-saver.jar

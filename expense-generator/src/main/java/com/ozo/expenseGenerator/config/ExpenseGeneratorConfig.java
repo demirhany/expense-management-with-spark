@@ -2,6 +2,7 @@ package com.ozo.expenseGenerator.config;
 
 import com.ozo.expenseGenerator.model.Expense;
 import com.ozo.expenseGenerator.service.ExpenseService;
+import com.ozo.expenseGenerator.util.ExpenseConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -25,7 +26,7 @@ public class ExpenseGeneratorConfig {
     @Scheduled(fixedRate = 1000)
     public void run() {
         Expense expense = expenseService.generateRandomExpense();
-        kafkaTemplate.send(topic, expense.toString());
+        kafkaTemplate.send(topic, ExpenseConverter.toDelimitedString(expense));
         System.out.println("Message sent to kafka: " + expense);
     }
 }

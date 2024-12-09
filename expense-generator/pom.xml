@@ -71,12 +71,6 @@
 			<artifactId>spark-sql_2.12</artifactId>
 			<version>3.3.0</version> <!-- Spark sürümünü ihtiyacınıza göre güncelleyin -->
 		</dependency>
-		<dependency>
-			<groupId>com.datastax.spark</groupId>
-			<artifactId>spark-cassandra-connector_2.12</artifactId>
-			<version>3.0.0</version> <!-- Spark Cassandra Connector sürümünü ihtiyacınıza göre güncelleyin -->
-		</dependency>
-
 	</dependencies>
 
 	<build>

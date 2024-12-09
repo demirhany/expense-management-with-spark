@@ -114,6 +114,7 @@ services:
   cassandra:
     image: cassandra:latest
     container_name: cassandra-container
+    hostname: cassandra-container
     ports:
       - "9042:9042"
     environment:
@@ -153,8 +154,8 @@ services:
     restart: always
     environment:
       - SPARK_MASTER=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=1G
-      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=4G
+      - SPARK_WORKER_CORES=4
     env_file:
       - ./hadoop.env
     ulimits:
@@ -179,6 +180,7 @@ services:
   broker:
     image: apache/kafka:latest
     container_name: broker
+    hostname: kafka
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
