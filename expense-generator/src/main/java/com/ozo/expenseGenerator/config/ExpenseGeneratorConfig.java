@@ -1,6 +1,7 @@
 package com.ozo.expenseGenerator.config;
 
-import com.ozo.expenseGenerator.service.EmployeeService;
+import com.ozo.expenseGenerator.model.Expense;
+import com.ozo.expenseGenerator.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -10,24 +11,21 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling
 public class ExpenseGeneratorConfig {
-    private final EmployeeService employeeService;
+    private final ExpenseService expenseService;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Value("${kafka.topic}")
     private String topic;
 
-    public ExpenseGeneratorConfig(EmployeeService employeeService, KafkaTemplate<String, String> kafkaTemplate) {
-        this.employeeService = employeeService;
+    public ExpenseGeneratorConfig(ExpenseService expenseService, KafkaTemplate<String, String> kafkaTemplate) {
+        this.expenseService = expenseService;
         this.kafkaTemplate = kafkaTemplate;
     }
 
     @Scheduled(fixedRate = 1000)
     public void run() {
-        Long empno = employeeService.getARandomEmpno();
-        String data = empno.toString() + " " + employeeService.getEmployeeNameByEmpno(empno);
-        kafkaTemplate.send(topic, data);
-        System.out.println("Message sent to kafka: " + data);
-//        System.out.print(empno);
-//        System.out.println(" " + employeeService.getEmployeeNameByEmpno(empno));
+        Expense expense = expenseService.generateRandomExpense();
+        kafkaTemplate.send(topic, expense.toString());
+        System.out.println("Message sent to kafka: " + expense);
     }
 }
