@@ -9,6 +9,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.UUID;
+
 @Configuration
 @EnableScheduling
 public class ExpenseGeneratorConfig {
@@ -26,7 +28,8 @@ public class ExpenseGeneratorConfig {
     @Scheduled(fixedRate = 1000)
     public void run() {
         Expense expense = expenseService.generateRandomExpense();
-        kafkaTemplate.send(topic, ExpenseConverter.toDelimitedString(expense));
+        UUID uuid = UUID.randomUUID();
+        kafkaTemplate.send(topic, ExpenseConverter.toJson(uuid.toString(), expense));
         System.out.println("Message sent to kafka: " + expense);
     }
 }
