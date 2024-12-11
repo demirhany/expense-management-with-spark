@@ -42,7 +42,7 @@
                 <td th:text="${employee.getSal()}"></td>
                 <td th:text="${employee.getComm()}"></td>
                 <td th:text="${employee.getDept()}"></td>
-                <td th:text="${employee.getTotalExpense()}"></td>
+                <td th:text="'$' + ${employee.getTotalExpense()}"></td>
                 <td>
                     <img th:if="${employee.getPhotoUrl() != null}"
                          th:src="${employee.getPhotoUrl()}"
