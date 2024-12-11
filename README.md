@@ -17,5 +17,5 @@ CREATE TABLE bigdatadbcassandra.user_data (
 
 sh /spark/data/spark-shell-with-packages.sh
 
-:load /spark/data/spark-shell-with-packages.sh
+:load /spark/data/kafkaToCassandra.scala
 
