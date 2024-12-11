@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    @Query("SELECT e.empno FROM Employee e")
+    @Query("SELECT e.empno FROM Employee e WHERE e.isDeleted = false")
     List<Long> findAllEmpno();
 
     Employee findEmployeeByEmpno(Long empno);

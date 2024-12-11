@@ -30,10 +30,13 @@ public class MainService {
         JavaRDD<Expense> myDataJavaRDD = functions.cassandraTable("bigdatadbcassandra",
                 "user_data", CassandraJavaUtil.mapRowTo(Expense.class));
 
-        Float result = myDataJavaRDD.filter(expense -> Objects.equals(expense.getUserid(), userId))
-                .map(expense -> expense.getPayment() * expense.getCount())
-                .reduce(Float::sum);
+        JavaRDD<Float> collection = myDataJavaRDD.filter(expense -> Objects.equals(expense.getUserid(), userId))
+                .map(expense -> expense.getPayment() * expense.getCount());
 
+        // check if any entry for the user
+        if (collection.isEmpty()) return 0.0f;
+
+        Float result = collection.reduce(Float::sum);
         return (float) ((int) (result * 100)) / 100;
     }
 }
