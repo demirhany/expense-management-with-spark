@@ -19,7 +19,7 @@ public class EmployeeWithUrlPhotoDto {
     private Long sal;
     private Long comm;
     private String dept;
-    private Long totalExpense;
+    private Float totalExpense;
     private String photoUrl;
 
     public EmployeeWithUrlPhotoDto(Employee employee) {
@@ -32,7 +32,7 @@ public class EmployeeWithUrlPhotoDto {
         this.comm = employee.getComm();
         this.dept = employee.getDeptno().getDname();
     }
-    public EmployeeWithUrlPhotoDto(Employee employee, Long totalExpense) {
+    public EmployeeWithUrlPhotoDto(Employee employee, Float totalExpense) {
         this.empno = employee.getEmpno();
         this.ename = employee.getEname();
         this.job = employee.getJob();

@@ -8,6 +8,7 @@ import com.ozo.bigdatahadoopspring.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -21,6 +22,7 @@ public class MainService {
     private final EmployeeRepository employeeRepository;
     private final PhotoService photoService;
     private final DepartmentRepository departmentRepository;
+    private final RestTemplate restTemplate;
 
     public List<EmployeeWithBase64PhotoDto> getAllEmployeesWithBase64Photos() {
         List<Employee> fetchedEmployees = employeeRepository.findAllAndIsDeletedFalse();
@@ -44,9 +46,8 @@ public class MainService {
         return employeeWithPhotoDtoList;
     }
 
-    public Long getTotalExpenseByEmpno(Long empno) {
-        // dummy implementation
-        return 1000L;
+    public Float getTotalExpenseByEmpno(Long empno) {
+        return restTemplate.getForObject("http://localhost:8083/api/expenses/" + empno, Float.class);
     }
 
     private EmployeeWithBase64PhotoDto _getEmployeeWithBase64PhotoDto(Employee employee) {

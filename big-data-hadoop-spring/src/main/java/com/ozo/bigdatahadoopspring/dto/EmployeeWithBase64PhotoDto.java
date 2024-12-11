@@ -19,7 +19,7 @@ public class EmployeeWithBase64PhotoDto {
     private Long sal;
     private Long comm;
     private String dept;
-    private Long totalExpense;
+    private Float totalExpense;
     private String Base64Photo;
 
     public EmployeeWithBase64PhotoDto(Employee employee) {
@@ -32,7 +32,7 @@ public class EmployeeWithBase64PhotoDto {
         this.comm = employee.getComm();
         this.dept = employee.getDeptno().getDname();
     }
-    public EmployeeWithBase64PhotoDto(Employee employee, Long totalExpense) {
+    public EmployeeWithBase64PhotoDto(Employee employee, Float totalExpense) {
         this.empno = employee.getEmpno();
         this.ename = employee.getEname();
         this.job = employee.getJob();

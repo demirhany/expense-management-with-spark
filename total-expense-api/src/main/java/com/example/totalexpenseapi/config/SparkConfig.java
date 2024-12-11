@@ -1,4 +1,4 @@
-package com.example.totalexpenseapi.Config;
+package com.example.totalexpenseapi.config;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
