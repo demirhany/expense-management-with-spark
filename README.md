@@ -1,7 +1,8 @@
 # Big Data Homework 3
 # Expense-Management-With-Spark
+## Introduction
 
-Sample web application that is an application of spring framework, hadoop, spark, kafka, cassandra db.
+This project demonstrates a comprehensive big data solution using Apache Spark, Cassandra, Kafka, and Hadoop, combined with Spring Boot for backend services. The system is designed to manage and analyze expenses in a distributed architecture.
 
 ./big-data-aws ./big_data_hw_spring are not used in the last version.
 
