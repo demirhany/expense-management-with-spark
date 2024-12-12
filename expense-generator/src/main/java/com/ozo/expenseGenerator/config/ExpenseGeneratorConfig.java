@@ -29,7 +29,7 @@ public class ExpenseGeneratorConfig {
     public void run() {
         Expense expense = expenseService.generateRandomExpense();
         UUID uuid = UUID.randomUUID();
-        kafkaTemplate.send(topic, ExpenseConverter.toJson(uuid.toString(), expense));
+        kafkaTemplate.send(topic + expense.getUserId(), ExpenseConverter.toJson(uuid.toString(), expense));
         System.out.println("Message sent to kafka: " + expense);
     }
 }

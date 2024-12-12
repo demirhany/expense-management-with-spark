@@ -5,7 +5,7 @@ import org.apache.spark.sql.types._
 
 // Kafka parameters
 val kafkaBootstrapServers = "kafka:9092"
-val kafkaTopic = "expense-topic"
+val kafkaTopic = ".*"
 
 val schema = StructType(Seq(
   StructField("id", StringType, nullable = false),
@@ -22,7 +22,7 @@ try {
   val newDF: DataFrame = spark.readStream
     .format("kafka")
     .option("kafka.bootstrap.servers", kafkaBootstrapServers)
-    .option("subscribe", kafkaTopic)
+    .option("subscribePattern", kafkaTopic)
     .load()
 
   // Extract and process the value field from Kafka messages
