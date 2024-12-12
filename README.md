@@ -2,6 +2,8 @@
 
 Sample web application that is an application of spring framework, hadoop, spark, kafka, cassandra db.
 
+./big-data-aws ./big_data_hw_spring are not used in the last version.
+
 ## Setup
 
 ### Run Docker Compose
