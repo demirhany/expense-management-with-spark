@@ -1,4 +1,3 @@
-# Big Data Homework 3
 # Expense-Management-With-Spark
 ## Introduction
 
